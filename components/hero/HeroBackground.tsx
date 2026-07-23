@@ -1,75 +1,90 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import Image from "next/image";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 export default function HeroBackground() {
-  const backgroundRef = useRef<HTMLDivElement>(null);
+  const bgRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const bg = backgroundRef.current;
+    if (!bgRef.current) return;
 
-    if (!bg) return;
+    const ctx = gsap.context(() => {
+      // Cinematic zoom on page load
+      gsap.fromTo(
+        ".hero-image",
+        {
+          scale: 1.18,
+        },
+        {
+          scale: 1,
+          duration: 2.5,
+          ease: "power3.out",
+        }
+      );
 
-    // Initial cinematic zoom
-    gsap.fromTo(
-      bg,
-      {
-        scale: 1.15,
-      },
-      {
-        scale: 1,
-        duration: 2,
-        ease: "power3.out",
-      }
-    );
+      // Mouse Parallax
+      const move = (e: MouseEvent) => {
+        const x = (e.clientX / window.innerWidth - 0.5) * 25;
+        const y = (e.clientY / window.innerHeight - 0.5) * 25;
 
-    // GTA-style parallax
-    gsap.to(bg, {
-      yPercent: 20,
-      ease: "none",
-      scrollTrigger: {
-        trigger: ".hero",
-        start: "top top",
-        end: "bottom top",
-        scrub: true,
-      },
-    });
+        gsap.to(".hero-image", {
+          x,
+          y,
+          duration: 1.2,
+          ease: "power3.out",
+        });
 
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    };
+        gsap.to(".hero-glow", {
+          x: x * 1.5,
+          y: y * 1.5,
+          duration: 1.5,
+          ease: "power3.out",
+        });
+      };
+
+      window.addEventListener("mousemove", move);
+
+      return () => {
+        window.removeEventListener("mousemove", move);
+      };
+    }, bgRef);
+
+    return () => ctx.revert();
   }, []);
 
   return (
     <div
-      ref={backgroundRef}
+      ref={bgRef}
       className="absolute inset-0 overflow-hidden"
     >
-      {/* Hero Image */}
+      {/* Background Image */}
       <Image
         src="/hero.jpg"
         alt="Hero Background"
         fill
         priority
-        className="object-cover scale-110"
+        className="hero-image object-cover"
       />
 
       {/* Dark Overlay */}
       <div className="absolute inset-0 bg-black/55" />
 
+      {/* Top Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-transparent" />
+
       {/* Bottom Gradient */}
       <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
 
-      {/* Radial Glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.08),transparent_70%)]" />
+      {/* Radial Light */}
+      <div className="hero-glow absolute left-1/2 top-1/2 h-[700px] w-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-400/10 blur-[180px]" />
 
       {/* Vignette */}
-      <div className="absolute inset-0 shadow-[inset_0_0_250px_rgba(0,0,0,0.9)]" />
+      <div className="absolute inset-0 shadow-[inset_0_0_250px_rgba(0,0,0,.95)]" />
+
+      {/* Grid */}
+      <div className="hero-grid absolute inset-0" />
     </div>
   );
 }

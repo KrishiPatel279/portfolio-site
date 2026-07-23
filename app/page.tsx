@@ -11,22 +11,34 @@ import Footer from "@/components/Footer";
 import Showcase from "@/components/Showcase";
 import Loader from "@/components/Loader";
 
+import Cursor from "@/components/ui/Cursor";
+import Noise from "@/components/ui/Noise";
+import ScrollProgress from "@/components/ui/ScrollProgress";
+
 export default function Home() {
   return (
     <>
-      <SmoothScroll />
-
-      <Navbar />
-      <Hero />
-      <About />
-      <Skills />
-      <Projects />
-      <Experience />
-      <Contact />
-      <Footer />
-      <Hero />
-      <Showcase />
+      {/* Global Components */}
       <Loader />
+      <SmoothScroll />
+      <Cursor />
+      <Noise />
+      <ScrollProgress />
+
+      {/* Main Website */}
+      <Navbar />
+
+      <main>
+        <Hero />
+        <About />
+        <Skills />
+        <Projects />
+        <Experience />
+        <Showcase />
+        <Contact />
+      </main>
+
+      <Footer />
     </>
   );
 }
