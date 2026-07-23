@@ -1,30 +1,352 @@
 @import "tailwindcss";
 
-html {
-  scroll-behavior: smooth;
+/* ==========================================================
+   DESIGN TOKENS
+========================================================== */
+
+:root {
+  --background: #050505;
+  --surface: rgba(255, 255, 255, 0.06);
+  --surface-hover: rgba(255, 255, 255, 0.12);
+
+  --border: rgba(255, 255, 255, 0.14);
+
+  --text: #ffffff;
+  --text-secondary: rgba(255,255,255,.72);
+
+  --accent: #7dd3fc;
+  --accent-light: #38bdf8;
+
+  --radius: 28px;
+
+  --container: 1280px;
+
+  --transition: .35s cubic-bezier(.22,.61,.36,1);
+}
+
+/* ==========================================================
+   RESET
+========================================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+*::before,
+*::after{
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
 }
 
 body{
-  background:#000;
-  color:white;
-  overflow-x:hidden;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+
+    background:var(--background);
+
+    color:var(--text);
+
+    overflow-x:hidden;
+
+    font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+    text-rendering:optimizeLegibility;
+
+    -webkit-font-smoothing:antialiased;
+
+    -moz-osx-font-smoothing:grayscale;
 }
 
+/* ==========================================================
+   TYPOGRAPHY
+========================================================== */
+
+h1,h2,h3,h4,h5,h6{
+
+    font-weight:800;
+
+    letter-spacing:-0.04em;
+
+    line-height:1;
+}
+
+p{
+
+    color:var(--text-secondary);
+
+    line-height:1.8;
+}
+
+/* ==========================================================
+   LAYOUT
+========================================================== */
+
 section{
-  min-height:100vh;
+
+    position:relative;
+
+    min-height:100vh;
+
+    overflow:hidden;
 }
 
 .container{
-  max-width:1200px;
-  margin:auto;
-  padding:0 2rem;
+
+    width:100%;
+
+    max-width:var(--container);
+
+    margin:auto;
+
+    padding-inline:2rem;
 }
 
-.gradient{
-  background:linear-gradient(
-      to bottom,
-      rgba(0,0,0,.3),
-      rgba(0,0,0,.9)
-  );
+/* ==========================================================
+   APPLE LIQUID GLASS
+========================================================== */
+
+.glass{
+
+    background:var(--surface);
+
+    border:1px solid var(--border);
+
+    backdrop-filter:blur(24px);
+
+    -webkit-backdrop-filter:blur(24px);
+
+    border-radius:var(--radius);
+
+    box-shadow:
+        0 12px 60px rgba(0,0,0,.35),
+        inset 0 1px rgba(255,255,255,.18);
+
+    transition:var(--transition);
+}
+
+.glass:hover{
+
+    background:var(--surface-hover);
+
+    transform:translateY(-4px);
+}
+
+/* ==========================================================
+   BUTTONS
+========================================================== */
+
+.btn{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:.6rem;
+
+    padding:1rem 2rem;
+
+    border-radius:999px;
+
+    border:1px solid var(--border);
+
+    cursor:pointer;
+
+    transition:var(--transition);
+
+    backdrop-filter:blur(20px);
+
+    text-decoration:none;
+}
+
+.btn-primary{
+
+    background:white;
+
+    color:black;
+}
+
+.btn-primary:hover{
+
+    transform:translateY(-3px) scale(1.03);
+}
+
+.btn-secondary{
+
+    background:rgba(255,255,255,.08);
+
+    color:white;
+}
+
+.btn-secondary:hover{
+
+    background:rgba(255,255,255,.15);
+}
+
+/* ==========================================================
+   HERO
+========================================================== */
+
+.hero{
+
+    position:relative;
+
+    min-height:100vh;
+
+    overflow:hidden;
+}
+
+.hero-grid{
+
+    position:absolute;
+
+    inset:0;
+
+    pointer-events:none;
+
+    background-image:
+
+        linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+
+        linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+
+    background-size:90px 90px;
+
+    opacity:.22;
+}
+
+.hero-gradient{
+
+    position:absolute;
+
+    inset:0;
+
+    background:
+
+    linear-gradient(
+
+        to bottom,
+
+        rgba(0,0,0,.15),
+
+        rgba(0,0,0,.75),
+
+        rgba(0,0,0,.98)
+
+    );
+}
+
+/* ==========================================================
+   UTILITIES
+========================================================== */
+
+.text-gradient{
+
+    background:linear-gradient(
+        90deg,
+        white,
+        #dbeafe,
+        #7dd3fc
+    );
+
+    -webkit-background-clip:text;
+
+    color:transparent;
+}
+
+.hide-scrollbar{
+
+    scrollbar-width:none;
+}
+
+.hide-scrollbar::-webkit-scrollbar{
+
+    display:none;
+}
+
+/* ==========================================================
+   SCROLLBAR
+========================================================== */
+
+::-webkit-scrollbar{
+
+    width:10px;
+}
+
+::-webkit-scrollbar-track{
+
+    background:#050505;
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#2d2d2d;
+
+    border-radius:999px;
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:#555;
+}
+
+/* ==========================================================
+   SELECTION
+========================================================== */
+
+::selection{
+
+    background:#38bdf8;
+
+    color:black;
+}
+
+/* ==========================================================
+   ANIMATION HELPERS
+========================================================== */
+
+.fade-up{
+
+    opacity:0;
+
+    transform:translateY(40px);
+}
+
+.blur-in{
+
+    opacity:0;
+
+    filter:blur(20px);
+}
+
+.scale-in{
+
+    opacity:0;
+
+    transform:scale(.92);
+}
+
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
+
+@media (max-width:768px){
+
+    .container{
+
+        padding-inline:1.2rem;
+    }
+
+    h1{
+
+        font-size:clamp(3rem,12vw,5rem);
+    }
 }
