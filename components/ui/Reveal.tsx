@@ -1,10 +1,7 @@
 "use client";
 
-import { ReactNode, useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
+import { ReactNode } from "react";
+import { motion } from "framer-motion";
 
 type Direction = "up" | "down" | "left" | "right";
 
@@ -22,77 +19,65 @@ export default function Reveal({
   children,
   className = "",
   delay = 0,
-  duration = 1,
-  distance = 80,
+  duration = 0.8,
+  distance = 70,
   direction = "up",
   once = true,
 }: RevealProps) {
-  const ref = useRef<HTMLDivElement>(null);
+  const offset = {
+    x: 0,
+    y: 0,
+  };
 
-  useEffect(() => {
-    const element = ref.current;
+  switch (direction) {
+    case "up":
+      offset.y = distance;
+      break;
 
-    if (!element) return;
+    case "down":
+      offset.y = -distance;
+      break;
 
-    const axis = {
-      x: 0,
-      y: 0,
-    };
+    case "left":
+      offset.x = distance;
+      break;
 
-    switch (direction) {
-      case "up":
-        axis.y = distance;
-        break;
+    case "right":
+      offset.x = -distance;
+      break;
+  }
 
-      case "down":
-        axis.y = -distance;
-        break;
-
-      case "left":
-        axis.x = distance;
-        break;
-
-      case "right":
-        axis.x = -distance;
-        break;
-    }
-
-    const animation = gsap.fromTo(
-      element,
-      {
+  return (
+    <motion.div
+      className={className}
+      initial={{
         opacity: 0,
-        x: axis.x,
-        y: axis.y,
-        filter: "blur(14px)",
-      },
-      {
+        x: offset.x,
+        y: offset.y,
+        scale: 0.98,
+        filter: "blur(12px)",
+      }}
+      whileInView={{
         opacity: 1,
         x: 0,
         y: 0,
+        scale: 1,
         filter: "blur(0px)",
+      }}
+      viewport={{
+        once,
+        amount: 0.2,
+      }}
+      transition={{
         duration,
         delay,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: element,
-          start: "top 82%",
-          once,
-        },
-      }
-    );
-
-    return () => {
-      animation.kill();
-      ScrollTrigger.getAll().forEach((t) => t.kill());
-    };
-  }, [delay, distance, direction, duration, once]);
-
-  return (
-    <div
-      ref={ref}
-      className={className}
+        ease: [0.22, 1, 0.36, 1],
+      }}
+      style={{
+        willChange: "transform, opacity, filter",
+      }}
     >
       {children}
-    </div>
+    </motion.div>
   );
 }

@@ -1,44 +1,61 @@
 import SmoothScroll from "@/components/SmoothScroll";
 
 import Navbar from "@/components/Navbar";
+
 import Hero from "@/components/hero/Hero";
 import About from "@/components/About";
 import Skills from "@/components/Skills";
 import Projects from "@/components/Projects";
 import Experience from "@/components/Experience";
+import Showcase from "@/components/Showcase";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
-import Showcase from "@/components/Showcase";
-import Loader from "@/components/Loader";
 
-import Cursor from "@/components/ui/Cursor";
 import Noise from "@/components/ui/Noise";
 import ScrollProgress from "@/components/ui/ScrollProgress";
 
 export default function Home() {
   return (
     <>
-      {/* Global Components */}
-      <Loader />
+      {/* Global Effects */}
       <SmoothScroll />
-      <Cursor />
       <Noise />
       <ScrollProgress />
 
-      {/* Main Website */}
+      {/* Navigation */}
       <Navbar />
 
-      <main>
-      <Hero />
-        <About />
-        <Skills />
-        <Projects />
-        <Experience />
-        <Showcase />
-        <Contact />
-        <Footer />
+      {/* Main Content */}
+      <main className="relative overflow-hidden">
+        <Hero />
+
+        <section id="about" className="section">
+          <About />
+        </section>
+
+        <section id="skills" className="section">
+          <Skills />
+        </section>
+
+        <section id="projects" className="section">
+          <Projects />
+        </section>
+
+        <section id="experience" className="section">
+          <Experience />
+        </section>
+
+        <section id="showcase" className="section">
+          <Showcase />
+        </section>
+
+        <section id="contact" className="section">
+          <Contact />
+        </section>
       </main>
 
+      {/* Footer */}
+      <Footer />
     </>
   );
 }

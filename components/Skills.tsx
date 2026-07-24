@@ -1,10 +1,14 @@
 "use client";
 
-import { motion } from "framer-motion";
+import SectionHeading from "@/components/ui/SectionHeading";
+import Reveal from "@/components/ui/Reveal";
+import GlassCard from "@/components/ui/GlassCard";
+import Magnetic from "@/components/ui/Magnetic";
 
 const skillGroups = [
   {
     title: "Cybersecurity",
+    icon: "🛡️",
     skills: [
       { name: "Penetration Testing", level: 90 },
       { name: "Network Security", level: 88 },
@@ -14,6 +18,7 @@ const skillGroups = [
   },
   {
     title: "Programming",
+    icon: "💻",
     skills: [
       { name: "Java", level: 90 },
       { name: "Python", level: 88 },
@@ -23,6 +28,7 @@ const skillGroups = [
   },
   {
     title: "Web Development",
+    icon: "🌐",
     skills: [
       { name: "React", level: 90 },
       { name: "Next.js", level: 88 },
@@ -32,6 +38,7 @@ const skillGroups = [
   },
   {
     title: "Cloud & AI",
+    icon: "☁️",
     skills: [
       { name: "AWS", level: 75 },
       { name: "Azure", level: 72 },
@@ -45,78 +52,127 @@ export default function Skills() {
   return (
     <section
       id="skills"
-      className="relative py-32"
+      className="relative overflow-hidden py-32"
     >
-      <div className="container">
+      {/* Background Glow */}
 
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="mb-20"
-        >
-          <p className="mb-3 uppercase tracking-[0.35em] text-cyan-400 text-sm">
-            Skills
-          </p>
+      <div className="pointer-events-none absolute inset-0">
 
-          <h2 className="text-5xl font-black md:text-7xl">
-            Technologies
-            <br />
-            I Work With.
-          </h2>
-        </motion.div>
+        <div className="absolute left-[-10%] top-32 h-[500px] w-[500px] rounded-full bg-cyan-400/10 blur-[200px]" />
 
-        <div className="grid gap-8 lg:grid-cols-2">
+        <div className="absolute right-[-10%] bottom-0 h-[450px] w-[450px] rounded-full bg-violet-500/10 blur-[200px]" />
 
-          {skillGroups.map((group) => (
-            <motion.div
+      </div>
+
+      <div className="container relative z-10">
+
+        <SectionHeading
+          badge="Skills"
+          title="Technologies"
+          accent="I Work With"
+          description="A combination of cybersecurity expertise, software engineering, cloud technologies and artificial intelligence used to build secure, scalable and immersive digital experiences."
+        />
+
+        <div className="mt-24 grid gap-8 lg:grid-cols-2">
+
+          {skillGroups.map((group, groupIndex) => (
+
+            <Reveal
               key={group.title}
-              whileHover={{
-                y: -8,
-              }}
-              transition={{
-                duration: 0.3,
-              }}
-              className="glass rounded-3xl p-8"
+              delay={groupIndex * 0.1}
             >
-              <h3 className="mb-8 text-2xl font-bold">
-                {group.title}
-              </h3>
 
-              <div className="space-y-6">
+              <Magnetic strength={0.12}>
 
-                {group.skills.map((skill) => (
-                  <div key={skill.name}>
-                    <div className="mb-2 flex justify-between">
-                      <span>{skill.name}</span>
-                      <span className="text-white/50">
-                        {skill.level}%
-                      </span>
+                <GlassCard className="group relative overflow-hidden">
+
+                  {/* Background Glow */}
+
+                  <div className="absolute -right-16 -top-16 h-40 w-40 rounded-full bg-cyan-400/10 blur-[80px] transition-all duration-700 group-hover:bg-cyan-400/20" />
+
+                  {/* Prism */}
+
+                  <div className="prism absolute inset-0 opacity-20" />
+
+                  {/* Header */}
+
+                  <div className="mb-10 flex items-center gap-4">
+
+                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-white/10 text-2xl backdrop-blur-xl">
+
+                      {group.icon}
+
                     </div>
 
-                    <div className="h-2 rounded-full bg-white/10 overflow-hidden">
+                    <div>
 
-                      <motion.div
-                        initial={{ width: 0 }}
-                        whileInView={{
-                          width: `${skill.level}%`,
-                        }}
-                        transition={{
-                          duration: 1.2,
-                        }}
-                        viewport={{ once: true }}
-                        className="h-full rounded-full bg-gradient-to-r from-cyan-400 to-blue-500"
-                      />
+                      <h3 className="text-2xl font-bold">
+
+                        {group.title}
+
+                      </h3>
+
+                      <p className="text-sm text-white/50">
+
+                        Professional proficiency
+
+                      </p>
 
                     </div>
 
                   </div>
-                ))}
 
-              </div>
+                  {/* Skills */}
 
-            </motion.div>
+                  <div className="space-y-7">
+
+                    {group.skills.map((skill) => (
+
+                      <div key={skill.name}>
+
+                        <div className="mb-3 flex items-center justify-between">
+
+                          <span className="font-medium text-white/90">
+
+                            {skill.name}
+
+                          </span>
+
+                          <span className="text-sm font-semibold text-cyan-300">
+
+                            {skill.level}%
+
+                          </span>
+
+                        </div>
+
+                        <div className="relative h-3 overflow-hidden rounded-full bg-white/10">
+
+                          <div
+                            className="h-full rounded-full bg-gradient-to-r from-cyan-300 via-sky-400 to-violet-400 shadow-[0_0_25px_rgba(56,189,248,.45)] transition-all duration-1000"
+                            style={{
+                              width: `${skill.level}%`,
+                            }}
+                          />
+
+                          {/* Glass Reflection */}
+
+                          <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent)]" />
+
+                        </div>
+
+                      </div>
+
+                    ))}
+
+                  </div>
+
+                </GlassCard>
+
+              </Magnetic>
+
+            </Reveal>
+
           ))}
 
         </div>

@@ -10,49 +10,86 @@ interface Particle {
   duration: number;
   delay: number;
   opacity: number;
+  color: string;
+  blur: number;
 }
 
 export default function FloatingParticles() {
   const particles = useMemo<Particle[]>(() => {
-    return Array.from({ length: 25 }, (_, i) => ({
+    return Array.from({ length: 30 }, (_, i) => ({
       id: i,
-      size: Math.random() * 6 + 2,
-      left: Math.random() * 100,
-      duration: Math.random() * 18 + 12,
-      delay: Math.random() * 10,
-      opacity: Math.random() * 0.35 + 0.1,
+
+      size: 2 + (i % 5),
+
+      left: ((i * 37) % 100),
+
+      duration: 14 + (i % 8),
+
+      delay: (i % 10) * 0.8,
+
+      opacity: 0.08 + ((i % 6) * 0.05),
+
+      blur: 1 + (i % 3),
+
+      color: [
+        "#ffffff",
+        "#b8f3ff",
+        "#72dcff",
+        "#7cc8ff",
+      ][i % 4],
     }));
   }, []);
 
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden z-10">
+
       {particles.map((particle) => (
-        <motion.span
+        <motion.div
           key={particle.id}
-          className="absolute rounded-full bg-white"
+          className="absolute rounded-full"
+
           style={{
             width: particle.size,
             height: particle.size,
             left: `${particle.left}%`,
-            bottom: "-40px",
+            bottom: "-8%",
             opacity: particle.opacity,
-            filter: "blur(1px)",
+            background: particle.color,
+            filter: `blur(${particle.blur}px)`,
+            boxShadow: `0 0 ${particle.size * 10}px ${particle.color}`,
           }}
+
           animate={{
             y: ["0vh", "-120vh"],
-            x: [0, 20, -20, 10, 0],
+            x: [
+              0,
+              12,
+              -18,
+              15,
+              -8,
+              0,
+            ],
+            scale: [
+              1,
+              1.25,
+              0.9,
+              1.15,
+              1,
+            ],
             opacity: [
               0,
               particle.opacity,
               particle.opacity,
+              particle.opacity * 0.6,
               0,
             ],
           }}
+
           transition={{
             duration: particle.duration,
+            delay: particle.delay,
             repeat: Infinity,
             ease: "linear",
-            delay: particle.delay,
           }}
         />
       ))}

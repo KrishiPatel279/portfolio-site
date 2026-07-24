@@ -1,7 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { ReactNode } from "react";
+import { motion } from "framer-motion";
 import clsx from "clsx";
 
 interface GlassButtonProps {
@@ -11,6 +11,57 @@ interface GlassButtonProps {
   icon?: ReactNode;
   variant?: "primary" | "secondary" | "ghost";
   className?: string;
+  disabled?: boolean;
+}
+
+const baseClasses =
+  "group relative inline-flex items-center justify-center overflow-hidden rounded-full px-8 py-4 font-medium transition-all duration-300 select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black";
+
+const variantClasses = {
+  primary:
+    "glass bg-white text-black shadow-xl hover:shadow-white/20",
+
+  secondary:
+    "glass border border-white/20 text-white hover:border-white/40",
+
+  ghost:
+    "text-white hover:bg-white/5",
+};
+
+function ButtonContent({
+  children,
+  icon,
+}: {
+  children: ReactNode;
+  icon?: ReactNode;
+}) {
+  return (
+    <>
+      {/* Glass Shine */}
+      <span className="pointer-events-none absolute inset-0 overflow-hidden rounded-full">
+        <span className="absolute -left-1/2 top-0 h-full w-1/2 -skew-x-12 bg-white/10 blur-xl transition-transform duration-700 group-hover:translate-x-[250%]" />
+      </span>
+
+      {/* Content */}
+      <span className="relative z-10 flex items-center gap-3">
+        <span>{children}</span>
+
+        {icon && (
+          <motion.span
+            className="flex items-center"
+            whileHover={{ x: 3 }}
+            transition={{
+              type: "spring",
+              stiffness: 300,
+              damping: 20,
+            }}
+          >
+            {icon}
+          </motion.span>
+        )}
+      </span>
+    </>
+  );
 }
 
 export default function GlassButton({
@@ -20,60 +71,58 @@ export default function GlassButton({
   icon,
   variant = "primary",
   className = "",
+  disabled = false,
 }: GlassButtonProps) {
-  const base =
-    "inline-flex items-center justify-center gap-3 rounded-full px-8 py-4 font-medium transition-all duration-300 select-none";
+  const classes = clsx(
+    baseClasses,
+    variantClasses[variant],
+    disabled && "pointer-events-none opacity-50",
+    className
+  );
 
-  const variants = {
-    primary:
-      "glass bg-white text-black hover:scale-105 hover:shadow-2xl",
+  if (href) {
+    return (
+      <motion.a
+        href={href}
+        className={classes}
+        whileHover={{
+          y: -3,
+          scale: 1.03,
+        }}
+        whileTap={{
+          scale: 0.97,
+        }}
+        transition={{
+          type: "spring",
+          stiffness: 320,
+          damping: 22,
+        }}
+      >
+        <ButtonContent icon={icon}>{children}</ButtonContent>
+      </motion.a>
+    );
+  }
 
-    secondary:
-      "glass text-white hover:bg-white/10 hover:scale-105",
-
-    ghost:
-      "text-white hover:bg-white/5",
-  };
-
-  const content = (
-    <motion.span
-      className={clsx(base, variants[variant], className)}
+  return (
+    <motion.button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      className={classes}
       whileHover={{
-        scale: 1.05,
-        y: -2,
+        y: -3,
+        scale: 1.03,
       }}
       whileTap={{
         scale: 0.97,
       }}
       transition={{
         type: "spring",
-        stiffness: 300,
-        damping: 20,
+        stiffness: 320,
+        damping: 22,
       }}
     >
-      {icon}
-
-      <span>{children}</span>
-    </motion.span>
-  );
-
-  if (href) {
-    return (
-      <a
-        href={href}
-        className="inline-block"
-      >
-        {content}
-      </a>
-    );
-  }
-
-  return (
-    <button
-      onClick={onClick}
-      className="inline-block"
-    >
-      {content}
-    </button>
+      <ButtonContent icon={icon}>{children}</ButtonContent>
+    </motion.button>
   );
 }

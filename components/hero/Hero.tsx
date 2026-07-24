@@ -9,19 +9,32 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="hero relative flex min-h-screen items-center justify-center overflow-hidden"
+      aria-label="Hero"
+      className="hero relative isolate flex min-h-screen items-center justify-center overflow-hidden"
     >
       {/* Background */}
       <HeroBackground />
 
-      {/* Floating Particles */}
+      {/* Aurora Lighting */}
+      <div className="aurora blue absolute -left-48 top-20" />
+      <div className="aurora cyan absolute right-0 top-1/3" />
+      <div className="aurora purple absolute left-1/2 bottom-0 -translate-x-1/2" />
+
+      {/* Prism Refraction */}
+      <div className="prism absolute inset-0" />
+
+      {/* Floating Dust */}
       <FloatingParticles />
 
-      {/* Hero Content */}
-      <HeroContent />
+      {/* Main Content */}
+      <div className="relative z-20 w-full">
+        <HeroContent />
+      </div>
 
       {/* Scroll Indicator */}
-      <ScrollIndicator />
+      <div className="absolute bottom-8 left-1/2 z-30 -translate-x-1/2">
+        <ScrollIndicator />
+      </div>
     </section>
   );
 }
