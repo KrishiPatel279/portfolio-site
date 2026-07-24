@@ -1,69 +1,122 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { motion } from "framer-motion";
 
-gsap.registerPlugin(ScrollTrigger);
-
-const skills = [
-  "React",
-  "Next.js",
-  "TypeScript",
-  "JavaScript",
-  "Node.js",
-  "Express",
-  "MongoDB",
-  "PostgreSQL",
-  "Tailwind CSS",
-  "GSAP",
-  "Git",
-  "Docker",
+const skillGroups = [
+  {
+    title: "Cybersecurity",
+    skills: [
+      { name: "Penetration Testing", level: 90 },
+      { name: "Network Security", level: 88 },
+      { name: "Digital Forensics", level: 80 },
+      { name: "Security Auditing", level: 85 },
+    ],
+  },
+  {
+    title: "Programming",
+    skills: [
+      { name: "Java", level: 90 },
+      { name: "Python", level: 88 },
+      { name: "JavaScript", level: 86 },
+      { name: "TypeScript", level: 82 },
+    ],
+  },
+  {
+    title: "Web Development",
+    skills: [
+      { name: "React", level: 90 },
+      { name: "Next.js", level: 88 },
+      { name: "Tailwind CSS", level: 90 },
+      { name: "Node.js", level: 82 },
+    ],
+  },
+  {
+    title: "Cloud & AI",
+    skills: [
+      { name: "AWS", level: 75 },
+      { name: "Azure", level: 72 },
+      { name: "OpenAI APIs", level: 85 },
+      { name: "Machine Learning", level: 70 },
+    ],
+  },
 ];
 
 export default function Skills() {
-  const section = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    gsap.from(".skill-card", {
-      opacity: 0,
-      scale: 0.7,
-      y: 50,
-      duration: 0.6,
-      stagger: 0.08,
-      ease: "back.out(1.7)",
-      scrollTrigger: {
-        trigger: section.current,
-        start: "top 75%",
-      },
-    });
-  }, []);
-
   return (
     <section
       id="skills"
-      ref={section}
-      className="py-40 bg-zinc-950"
+      className="relative py-32"
     >
       <div className="container">
 
-        <h2 className="text-6xl font-bold mb-16">
-          Skills
-        </h2>
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="mb-20"
+        >
+          <p className="mb-3 uppercase tracking-[0.35em] text-cyan-400 text-sm">
+            Skills
+          </p>
 
-        <div className="grid md:grid-cols-4 gap-6">
+          <h2 className="text-5xl font-black md:text-7xl">
+            Technologies
+            <br />
+            I Work With.
+          </h2>
+        </motion.div>
 
-          {skills.map((skill) => (
+        <div className="grid gap-8 lg:grid-cols-2">
 
-            <div
-              key={skill}
-              className="skill-card bg-white/5 border border-white/10 rounded-2xl p-8 hover:bg-white hover:text-black duration-300 cursor-pointer"
+          {skillGroups.map((group) => (
+            <motion.div
+              key={group.title}
+              whileHover={{
+                y: -8,
+              }}
+              transition={{
+                duration: 0.3,
+              }}
+              className="glass rounded-3xl p-8"
             >
-              <h3 className="text-xl font-semibold">
-                {skill}
+              <h3 className="mb-8 text-2xl font-bold">
+                {group.title}
               </h3>
-            </div>
 
+              <div className="space-y-6">
+
+                {group.skills.map((skill) => (
+                  <div key={skill.name}>
+                    <div className="mb-2 flex justify-between">
+                      <span>{skill.name}</span>
+                      <span className="text-white/50">
+                        {skill.level}%
+                      </span>
+                    </div>
+
+                    <div className="h-2 rounded-full bg-white/10 overflow-hidden">
+
+                      <motion.div
+                        initial={{ width: 0 }}
+                        whileInView={{
+                          width: `${skill.level}%`,
+                        }}
+                        transition={{
+                          duration: 1.2,
+                        }}
+                        viewport={{ once: true }}
+                        className="h-full rounded-full bg-gradient-to-r from-cyan-400 to-blue-500"
+                      />
+
+                    </div>
+
+                  </div>
+                ))}
+
+              </div>
+
+            </motion.div>
           ))}
 
         </div>

@@ -1,97 +1,103 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const slides = [
+  {
+    title: "Immersive UI",
+    description:
+      "Inspired by Apple’s precision and Rockstar’s cinematic storytelling.",
+    image: "/projects/portfolio.jpg",
+  },
+  {
+    title: "Cyber Security",
+    description:
+      "Building secure systems that are fast, scalable and reliable.",
+    image: "/projects/dashboard.jpg",
+  },
+  {
+    title: "Artificial Intelligence",
+    description:
+      "Creating intelligent software powered by modern AI technologies.",
+    image: "/projects/chat.jpg",
+  },
+];
+
 export default function Showcase() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const sliderRef = useRef<HTMLDivElement>(null);
 
-const ref=useRef(null)
+  useEffect(() => {
+    if (!sectionRef.current || !sliderRef.current) return;
 
-useEffect(()=>{
+    const slider = sliderRef.current;
 
-const tl=gsap.timeline({
+    const ctx = gsap.context(() => {
+      gsap.to(slider, {
+        x: () => -(slider.scrollWidth - window.innerWidth),
+        ease: "none",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: () => `+=${slider.scrollWidth}`,
+          scrub: 1,
+          pin: true,
+          anticipatePin: 1,
+        },
+      });
+    }, sectionRef);
 
-scrollTrigger:{
+    return () => ctx.revert();
+  }, []);
 
-trigger:ref.current,
+  return (
+    <section
+      ref={sectionRef}
+      id="showcase"
+      className="relative h-[300vh]"
+    >
+      <div className="sticky top-0 flex h-screen items-center overflow-hidden">
 
-start:"top top",
+        <div
+          ref={sliderRef}
+          className="flex gap-10 px-20"
+        >
+          {slides.map((slide) => (
+            <div
+              key={slide.title}
+              className="glass relative h-[75vh] w-[75vw] overflow-hidden rounded-[40px]"
+            >
+              <Image
+                src={slide.image}
+                alt={slide.title}
+                fill
+                className="object-cover"
+              />
 
-end:"+=2500",
+              <div className="absolute inset-0 bg-black/40" />
 
-scrub:1,
+              <div className="absolute bottom-0 left-0 p-10">
 
-pin:true
+                <h2 className="text-5xl font-black">
+                  {slide.title}
+                </h2>
 
-}
+                <p className="mt-4 max-w-xl text-white/75 text-lg">
+                  {slide.description}
+                </p>
 
-})
+              </div>
 
-tl
+            </div>
+          ))}
+        </div>
 
-.from(".card1",{
-
-x:-400,
-opacity:0
-
-})
-
-.from(".card2",{
-
-x:400,
-opacity:0
-
-})
-
-.from(".card3",{
-
-y:300,
-opacity:0
-
-})
-
-},[])
-
-return(
-
-<section
-ref={ref}
-className="h-screen flex justify-center items-center bg-black overflow-hidden"
->
-
-<div className="container grid lg:grid-cols-3 gap-10">
-
-<div className="card1 bg-zinc-900 rounded-3xl p-12">
-
-<h2 className="text-3xl font-bold">
-Modern UI
-</h2>
-
-</div>
-
-<div className="card2 bg-zinc-900 rounded-3xl p-12">
-
-<h2 className="text-3xl font-bold">
-Cinematic Motion
-</h2>
-
-</div>
-
-<div className="card3 bg-zinc-900 rounded-3xl p-12">
-
-<h2 className="text-3xl font-bold">
-Performance
-</h2>
-
-</div>
-
-</div>
-
-</section>
-
-)
-
+      </div>
+    </section>
+  );
 }

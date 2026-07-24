@@ -1,111 +1,113 @@
 "use client";
 
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
 
-gsap.registerPlugin(ScrollTrigger);
+const timeline = [
+  {
+    year: "2025",
+    title: "Cybersecurity Analyst",
+    company: "Freelance / Personal Projects",
+    description:
+      "Developed cybersecurity tools, security audits, and AI-assisted workflows while building immersive web applications.",
+  },
+  {
+    year: "2024",
+    title: "Full Stack Developer",
+    company: "Personal Portfolio",
+    description:
+      "Built modern web applications using React, Next.js, Tailwind CSS, GSAP, and Framer Motion with a strong focus on UI/UX.",
+  },
+  {
+    year: "2023",
+    title: "Cybersecurity Student",
+    company: "Academic Journey",
+    description:
+      "Studied penetration testing, networking, cryptography, Linux, ethical hacking, and cloud security.",
+  },
+];
 
-const jobs = [
+export default function Experience() {
+  return (
+    <section id="experience" className="relative py-32">
+      <div className="container">
 
-{
-year:"2025",
-company:"Tech Company",
-role:"Frontend Engineer"
-},
+        <motion.div
+          initial={{ opacity: 0, y: 60 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: .8 }}
+          className="mb-24"
+        >
+          <p className="uppercase tracking-[0.35em] text-cyan-400 text-sm mb-4">
+            Experience
+          </p>
 
-{
-year:"2024",
-company:"Startup",
-role:"React Developer"
-},
+          <h2 className="text-5xl md:text-7xl font-black">
+            My Journey
+          </h2>
+        </motion.div>
 
-{
-year:"2023",
-company:"Freelancer",
-role:"Full Stack Developer"
-}
+        <div className="relative">
 
-]
+          {/* Timeline */}
 
-export default function Experience(){
+          <div className="absolute left-4 top-0 h-full w-[2px] bg-white/10 md:left-1/2 md:-translate-x-1/2" />
 
-const ref=useRef(null)
+          {timeline.map((item, index) => (
 
-useEffect(()=>{
+            <motion.div
+              key={item.year}
+              initial={{
+                opacity: 0,
+                y: 80,
+              }}
+              whileInView={{
+                opacity: 1,
+                y: 0,
+              }}
+              viewport={{ once: true }}
+              transition={{
+                duration: .8,
+                delay: index * .15,
+              }}
+              className={`mb-20 flex w-full ${
+                index % 2 === 0
+                  ? "md:justify-start"
+                  : "md:justify-end"
+              }`}
+            >
 
-gsap.from(".timeline-item",{
+              <div className="glass relative ml-12 max-w-xl rounded-[32px] p-8 md:ml-0">
 
-x:-120,
-opacity:0,
-duration:1,
+                {/* Timeline Dot */}
 
-stagger:.3,
+                <div className="absolute -left-[42px] top-10 h-5 w-5 rounded-full bg-cyan-400 shadow-[0_0_25px_rgba(34,211,238,.8)] md:left-auto md:right-[-50px]" />
 
-scrollTrigger:{
-trigger:ref.current,
-start:"top 75%"
-}
+                <span className="text-cyan-400 font-semibold">
+                  {item.year}
+                </span>
 
-})
+                <h3 className="mt-4 text-3xl font-bold">
+                  {item.title}
+                </h3>
 
-},[])
+                <p className="mt-2 text-white/60">
+                  {item.company}
+                </p>
 
-return(
+                <p className="mt-6 leading-8 text-white/70">
+                  {item.description}
+                </p>
 
-<section
-id="experience"
-ref={ref}
-className="py-40 bg-black"
->
+              </div>
 
-<div className="container">
+            </motion.div>
 
-<h2 className="text-6xl font-bold mb-20">
-Experience
-</h2>
+          ))}
 
-<div className="border-l border-white/20 ml-6">
+        </div>
 
-{jobs.map(job=>(
-
-<div
-key={job.year}
-className="timeline-item relative mb-20 pl-10"
->
-
-<div
-className="absolute w-5 h-5 rounded-full bg-white -left-[11px] top-2"
-/>
-
-<h3
-className="text-3xl font-bold"
->
-{job.role}
-</h3>
-
-<p
-className="text-blue-400 mt-2"
->
-{job.company}
-</p>
-
-<span
-className="text-gray-500"
->
-{job.year}
-</span>
-
-</div>
-
-))}
-
-</div>
-
-</div>
-
-</section>
-
-)
-
+      </div>
+    </section>
+  );
 }

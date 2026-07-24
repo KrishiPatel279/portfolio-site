@@ -1,117 +1,150 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
 
 const projects = [
   {
-    title: "AI Chat Application",
-    image: "/projects/chat.jpg",
-    stack: "Next.js • OpenAI • Tailwind",
-  },
-  {
-    title: "Finance Dashboard",
-    image: "/projects/dashboard.jpg",
-    stack: "React • Node • PostgreSQL",
-  },
-  {
     title: "Portfolio Website",
+    description:
+      "A premium portfolio inspired by Apple's liquid glass design and GTA VI cinematic animations, built using Next.js, Tailwind CSS, GSAP, and Framer Motion.",
     image: "/projects/portfolio.jpg",
-    stack: "Next.js • GSAP",
+    github: "https://github.com/KrishiPatel279/portfolio-site",
+    live: "#",
+    tech: ["Next.js", "Tailwind", "GSAP", "Framer Motion"],
+  },
+  {
+    title: "Cybersecurity Dashboard",
+    description:
+      "Interactive dashboard for monitoring security events, visualizing alerts, and analyzing network activity.",
+    image: "/projects/dashboard.jpg",
+    github: "#",
+    live: "#",
+    tech: ["React", "Node.js", "MongoDB"],
+  },
+  {
+    title: "AI Chat Assistant",
+    description:
+      "AI-powered chatbot capable of document analysis, intelligent responses, and workflow automation.",
+    image: "/projects/chat.jpg",
+    github: "#",
+    live: "#",
+    tech: ["OpenAI", "Next.js", "TypeScript"],
   },
 ];
 
 export default function Projects() {
+  return (
+    <section id="projects" className="py-32">
+      <div className="container">
 
-  const section = useRef(null);
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="mb-20"
+        >
+          <p className="mb-3 text-sm uppercase tracking-[0.35em] text-cyan-400">
+            Projects
+          </p>
 
-  useEffect(() => {
+          <h2 className="text-5xl font-black md:text-7xl">
+            Featured Work
+          </h2>
+        </motion.div>
 
-    gsap.from(".project",{
+        <div className="space-y-24">
 
-      y:150,
-      opacity:0,
-      stagger:.25,
-      duration:1.1,
+          {projects.map((project, index) => (
+            <motion.div
+              key={project.title}
+              initial={{
+                opacity: 0,
+                y: 80,
+              }}
+              whileInView={{
+                opacity: 1,
+                y: 0,
+              }}
+              viewport={{ once: true }}
+              transition={{
+                duration: 0.8,
+                delay: index * 0.15,
+              }}
+              className="glass overflow-hidden rounded-[40px]"
+            >
+              <div className="grid lg:grid-cols-2">
 
-      scrollTrigger:{
-        trigger:section.current,
-        start:"top 70%"
-      }
+                <div className="relative h-[420px] overflow-hidden">
 
-    })
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    className="object-cover transition duration-700 hover:scale-110"
+                  />
 
-  },[])
+                </div>
 
-return(
+                <div className="flex flex-col justify-center p-10">
 
-<section
-id="projects"
-ref={section}
-className="py-40"
->
+                  <h3 className="text-4xl font-bold">
+                    {project.title}
+                  </h3>
 
-<div className="container">
+                  <p className="mt-6 leading-8 text-white/70">
+                    {project.description}
+                  </p>
 
-<h2 className="text-6xl font-bold mb-20">
-Featured Projects
-</h2>
+                  <div className="mt-8 flex flex-wrap gap-3">
 
-<div className="grid lg:grid-cols-3 gap-10">
+                    {project.tech.map((tech) => (
+                      <span
+                        key={tech}
+                        className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm"
+                      >
+                        {tech}
+                      </span>
+                    ))}
 
-{projects.map(project=>(
+                  </div>
 
-<div
-key={project.title}
-className="project rounded-3xl overflow-hidden bg-zinc-900 group"
->
+                  <div className="mt-10 flex gap-5">
 
-<div className="overflow-hidden">
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="glass flex items-center gap-3 rounded-full px-6 py-3"
+                    >
+                      <FaGithub size={18} />
+                      GitHub
+                    </a>
 
-<img
-src={project.image}
-className="w-full h-80 object-cover duration-700 group-hover:scale-110"
-/>
+                    <a
+                      href={project.live}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="glass flex items-center gap-3 rounded-full px-6 py-3"
+                    >
+                      <FaExternalLinkAlt size={18} />
+                      Live Demo
+                    </a>
 
-</div>
+                  </div>
 
-<div className="p-8">
+                </div>
 
-<h3 className="text-2xl font-bold">
+              </div>
 
-{project.title}
+            </motion.div>
+          ))}
 
-</h3>
+        </div>
 
-<p className="mt-3 text-gray-400">
-
-{project.stack}
-
-</p>
-
-<button
-className="mt-8 px-6 py-3 rounded-full border border-white hover:bg-white hover:text-black duration-300"
->
-
-View Project
-
-</button>
-
-</div>
-
-</div>
-
-))}
-
-</div>
-
-</div>
-
-</section>
-
-)
-
+      </div>
+    </section>
+  );
 }

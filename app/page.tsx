@@ -29,16 +29,16 @@ export default function Home() {
       <Navbar />
 
       <main>
-        <Hero />
+      <Hero />
         <About />
         <Skills />
         <Projects />
         <Experience />
         <Showcase />
         <Contact />
+        <Footer />
       </main>
 
-      <Footer />
     </>
   );
 }
